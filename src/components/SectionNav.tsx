@@ -3,8 +3,6 @@ import { useEffect, useState } from 'react'
 const sections = [
   { id: 'demo', label: 'Demo' },
   { id: 'method', label: 'Method' },
-  { id: 'gallery', label: 'Gallery' },
-  { id: 'notes', label: 'Notes' },
 ]
 
 const navClass =
@@ -17,28 +15,53 @@ export function SectionNav() {
   const [activeSection, setActiveSection] = useState(sections[0].id)
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visibleEntry = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0]
+    let animationFrame = 0
 
-        if (visibleEntry?.target.id) {
-          setActiveSection(visibleEntry.target.id)
+    const updateActiveSection = () => {
+      const scrollBottom = window.scrollY + window.innerHeight
+      const pageBottom = document.documentElement.scrollHeight
+
+      if (pageBottom - scrollBottom < 4) {
+        setActiveSection(sections[sections.length - 1].id)
+        return
+      }
+
+      const activeLine = window.innerHeight * 0.42
+      let nextSection = sections[0].id
+
+      for (const section of sections) {
+        const sectionElement = document.getElementById(section.id)
+        if (!sectionElement) continue
+
+        const rect = sectionElement.getBoundingClientRect()
+        if (rect.top <= activeLine) {
+          nextSection = section.id
         }
-      },
-      {
-        rootMargin: '-24% 0px -54% 0px',
-        threshold: [0.1, 0.35, 0.6],
-      },
-    )
+      }
 
-    sections.forEach(({ id }) => {
-      const section = document.getElementById(id)
-      if (section) observer.observe(section)
+      setActiveSection(nextSection)
+    }
+
+    const requestActiveSectionUpdate = () => {
+      if (animationFrame) return
+
+      animationFrame = window.requestAnimationFrame(() => {
+        animationFrame = 0
+        updateActiveSection()
+      })
+    }
+
+    window.addEventListener('scroll', requestActiveSectionUpdate, {
+      passive: true,
     })
+    window.addEventListener('resize', requestActiveSectionUpdate)
+    updateActiveSection()
 
-    return () => observer.disconnect()
+    return () => {
+      if (animationFrame) window.cancelAnimationFrame(animationFrame)
+      window.removeEventListener('scroll', requestActiveSectionUpdate)
+      window.removeEventListener('resize', requestActiveSectionUpdate)
+    }
   }, [])
 
   return (
