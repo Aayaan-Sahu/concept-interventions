@@ -24,23 +24,29 @@ export function ConceptDemo() {
   )
 
   return (
-    <div className="demo-layout">
-      <div className="image-panel">
+    <div className="grid grid-cols-[minmax(0,1fr)_248px] items-start gap-6 max-[920px]:grid-cols-1">
+      <div className="min-w-0">
         <img
           alt={`${exampleId} with ${selectedConcept} concept at alpha ${selectedAlpha}`}
-          className="demo-image"
+          className="aspect-square w-full rounded-[6px] border border-line bg-surface object-cover"
           height="640"
           src={currentImagePath}
           width="640"
         />
-        <div className="image-caption">
-          <span>{exampleId}</span>
-          <span>{selectedConcept}</span>
-          <span>alpha = {selectedAlpha}</span>
+        <div className="mt-2.5 flex flex-wrap gap-2 text-[0.86rem] text-muted">
+          <span className="rounded-[6px] border border-line bg-white/50 px-[7px] py-[3px]">
+            {exampleId}
+          </span>
+          <span className="rounded-[6px] border border-line bg-white/50 px-[7px] py-[3px]">
+            {selectedConcept}
+          </span>
+          <span className="rounded-[6px] border border-line bg-white/50 px-[7px] py-[3px]">
+            alpha = {selectedAlpha}
+          </span>
         </div>
       </div>
 
-      <div className="demo-controls">
+      <div className="grid gap-[26px] pt-0.5 max-[920px]:grid-cols-2 max-[920px]:gap-[18px] max-[640px]:grid-cols-1">
         <ConceptSelector
           concepts={concepts}
           onSelect={setSelectedConcept}

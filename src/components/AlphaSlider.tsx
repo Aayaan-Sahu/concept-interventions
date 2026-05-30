@@ -14,16 +14,21 @@ export function AlphaSlider({
   const selectedAlpha = alphas[selectedIndex]
 
   return (
-    <div className="control-group">
-      <div className="alpha-heading">
-        <label className="control-label" htmlFor="alpha-slider">
+    <div className="grid gap-3">
+      <div className="flex items-baseline justify-between gap-3 max-[640px]:flex-col max-[640px]:items-start max-[640px]:gap-1">
+        <label
+          className="text-[0.95rem] font-[640] text-body"
+          htmlFor="alpha-slider"
+        >
           Intervention strength
         </label>
-        <span className="alpha-value">alpha = {selectedAlpha}</span>
+        <span className="whitespace-nowrap text-[0.92rem] text-accent-strong tabular-nums">
+          alpha = {selectedAlpha}
+        </span>
       </div>
       <input
         aria-valuetext={`alpha ${selectedAlpha}`}
-        className="alpha-slider"
+        className="m-0 h-5 w-full accent-accent"
         id="alpha-slider"
         max={alphas.length - 1}
         min={0}
@@ -32,7 +37,10 @@ export function AlphaSlider({
         type="range"
         value={selectedIndex}
       />
-      <div className="alpha-ticks" aria-hidden="true">
+      <div
+        className="grid grid-cols-5 text-center text-[0.8rem] text-muted tabular-nums"
+        aria-hidden="true"
+      >
         {alphas.map((alpha) => (
           <span key={alpha}>{alpha}</span>
         ))}
