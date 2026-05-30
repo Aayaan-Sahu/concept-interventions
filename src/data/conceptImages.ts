@@ -28,7 +28,7 @@ const alphaFileByAlpha = {
 } satisfies Record<Alpha, string>
 
 function getConceptBasePath(concept: Concept) {
-  return `/concept-images/image-01/${conceptFolderByConcept[concept]}`
+  return `${import.meta.env.BASE_URL}concept-images/image-01/${conceptFolderByConcept[concept]}`
 }
 
 export const conceptImages: ConceptImage[] = concepts.flatMap((concept) =>
